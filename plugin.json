@@ -1,0 +1,14 @@
+{
+	"main": "./dist/index.html",
+	"logo": "logo.jpg",
+	"features": [
+        {
+            "code": "home",
+            "explain": "专注todo",
+            "cmds": ["todo", "to", "专注todo"]
+        }
+    ],
+    "development": {
+        "main": "http://localhost:8080/"
+    }
+}
