@@ -38,15 +38,17 @@
 
 <script setup lang="ts">
 import { watch, ref } from 'vue'
-import { useCurrentEvent, useEventState } from '@/store'
+import { useCurrentEvent, useEventState, useEventList } from '@/store'
 import { useRecordTime } from '@/tools'
 import { ElNotification } from 'element-plus'
+import Worker from 'worker-loader!@/workers/worker.ts'
+let worker = new Worker()
 const currentEvent = useCurrentEvent()
 const eventState = useEventState()
+const eventListStore = useEventList()
 const minutes = ref()
 const seconds = ref()
 const isFinish = ref(false)
-let timer: any
 // 响应核心事件的变化，更新timer界面等
 watch(
   () => currentEvent.currentEvent,
@@ -66,7 +68,7 @@ watch(
       seconds.value = time[1] ? 30 : 0
     }
     isFinish.value = false
-    useRecordTime(seconds, isFinish)
+    useRecordTime(isFinish)
   }
 )
 // 侦听完成状态，以发出通知
@@ -90,28 +92,19 @@ watch(
       // 开始计时
       recordTime()
     } else {
-      // 暂停计时
-      clearInterval(timer)
+      worker.terminate()
     }
   }
 )
 const recordTime = () => {
-  let runtime = 0
   const isPositive = currentEvent.currentEvent.isPositive
-  timer = setInterval(() => {
-    const startTime = performance.now()
-    if (minutes.value === 0 && seconds.value === 0 && !isPositive) {
-      // 倒计时结束，事件执行完成
+  worker = new Worker()
+  worker.postMessage(true)
+  worker.onmessage = () => {
+    if (seconds.value === 0 && minutes.value === 0 && !isPositive) {
+      // 只中止倒计时，正向计时无上限状态
       isFinish.value = true
-      clearInterval(timer)
-    }
-    if (isPositive) {
-      if (seconds.value === 59) {
-        seconds.value = 0
-        minutes.value++
-      } else {
-        seconds.value++
-      }
+      worker.terminate()
     }
     if (!isPositive) {
       if (seconds.value === 0) {
@@ -120,10 +113,29 @@ const recordTime = () => {
       } else {
         seconds.value--
       }
+    } else {
+      if (seconds.value === 59) {
+        seconds.value = 0
+        minutes.value++
+      } else {
+        seconds.value++
+      }
     }
-    const end = performance.now()
-    runtime = (end - startTime) * 1000
-  }, 1000 - runtime)
+    if (seconds.value === 30 || seconds.value === 0) {
+      const type = currentEvent.currentEvent.type
+      const id = currentEvent.currentEvent.id
+      // 每30秒保存一次记录
+      if (isPositive) {
+        // 正向计时记录
+        eventListStore.incrementTime(type, id)
+        return
+      }
+      if (!isPositive) {
+        // 倒计时记录
+        eventListStore.decrementTime(type, id)
+      }
+    }
+  }
 }
 // 鼠标-开始计时
 const start = () => {

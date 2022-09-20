@@ -55,31 +55,79 @@ export const useEventList = defineStore('eventList', () => {
   // 倒计时同步
   const decrementTime = (type: 1 | 2 | 3, id: number) => {
     const user_data = getUserData()
+    let day = new Date().getDay()
+    if (day === 0) {
+      day = 7
+    }
+    user_data.history.thisweek[day - 1] += 0.5
     if (type === 1) {
       const index = list.event_1.findIndex((item: any) => item.id === id)
       list.event_1[index].time -= 0.5
+      user_data.event_1.findIndex((item: any, index: number) => {
+        if (item.id === id) {
+          user_data.event_1[index].time -= 0.5
+          return true
+        }
+      })
     } else if (type === 2) {
       const index = list.event_2.findIndex((item: any) => item.id === id)
       list.event_2[index].time -= 0.5
+      user_data.event_2.findIndex((item: any, index: number) => {
+        if (item.id === id) {
+          user_data.event_2[index].time -= 0.5
+          return true
+        }
+      })
     } else {
       const index = list.event_3.findIndex((item: any) => item.id === id)
       list.event_3[index].time -= 0.5
+      user_data.event_3.findIndex((item: any, index: number) => {
+        if (item.id === id) {
+          user_data.event_3[index].time -= 0.5
+          return true
+        }
+      })
     }
     // 变更本地数据
     setUserData(user_data)
   }
   // 正计时同步
   const incrementTime = (type: 1 | 2 | 3, id: number) => {
+    const user_data = getUserData()
+    let day = new Date().getDay()
+    if (day === 0) {
+      day = 7
+    }
+    user_data.history.thisweek[day - 1] += 0.5
     if (type === 1) {
       const index = list.event_1.findIndex((item: any) => item.id === id)
       list.event_1[index].positiveTime += 0.5
+      user_data.event_1.findIndex((item: any, index: number) => {
+        if (item.id === id) {
+          user_data.event_1[index].positiveTime += 0.5
+          return true
+        }
+      })
     } else if (type === 2) {
       const index = list.event_2.findIndex((item: any) => item.id === id)
       list.event_2[index].positiveTime += 0.5
+      user_data.event_2.findIndex((item: any, index: number) => {
+        if (item.id === id) {
+          user_data.event_2[index].positiveTime += 0.5
+          return true
+        }
+      })
     } else {
       const index = list.event_3.findIndex((item: any) => item.id === id)
       list.event_3[index].positiveTime += 0.5
+      user_data.event_3.findIndex((item: any, index: number) => {
+        if (item.id === id) {
+          user_data.event_3[index].positiveTime += 0.5
+          return true
+        }
+      })
     }
+    setUserData(user_data)
   }
   // 添加事件
   const addEvent = (obj: EventItem) => {
