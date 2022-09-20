@@ -8,13 +8,6 @@ module.exports = {
                 pathRewrite: {
                     '^/bing': ''
                 }
-            },
-            '/shici': {
-                target: 'https://v2.jinrishici.com',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/shici': ''
-                }
             }
         }
     },

@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    width: 100%;
+    height: 100vh;
+    font-size: 14px;
+    user-select: none;
+    cursor: url('https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/default.cur'), auto;
+}
+
+/* 添加和编辑事件面板出现/离开 动画 */
+.slide-in-enter-from,
+.slide-in-leave-to {
+    transform: translateY(-100%);
+}
+.slide-in-enter-active {
+    transition: transform 0.5s linear;
+}
+.slide-in-leave-active {
+    transition: transform 0.3s linear;
+}
+
+/* events 动画 */
+.fade-enter-from,
+.fade-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+}
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {    
+    transition: all 2s linear;
+}
+.fade-leave-active {
+    position: absolute;
+}
+
+/* main-left 动画 */
+.left-main-enter-from {
+    transform: translateX(100%);
+}
+.left-main-leave-to {
+    transform: translateX(-100%);
+}
+.left-main-enter-active,
+.left-main-leave-active {
+    transition: transform 0.5s linear;
+}
+/* main-right 动画 */
+.right-move-enter-from {
+    transform: translateX(100%);
+}
+.right-move-leave-to {
+    transform: translateX(-100%);
+}
+.right-move-enter-active,
+.right-move-leave-active {
+    position: absolute;
+    transition: transform 0.5s linear;
+}

@@ -1,0 +1,11 @@
+body {
+    --main-left-width: 200px;
+    --item-no-active-bg: #e9ecef;
+    --item-active-bg1: #ffa8a8;
+    --item-active-bg2: #ffec99;
+    --item-active-bg3: #8ce99a;
+    --add-todo-zindex: 1;
+    --verify-layer-zindex: 1;
+    --verify-zindex: 2;
+    --cursor-url: url('https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/default.cur'), auto;
+}

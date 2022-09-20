@@ -32,7 +32,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/tools/test.ts", "src/tools/timer.worker.js"  ],
   "exclude": [
     "node_modules"
   ]
