@@ -12,7 +12,7 @@ export const useEventList = defineStore('eventList', () => {
     user_data.event_3 = []
     user_data.createAt = new Date().getTime()
     user_data.events = []
-    user_data.id = 1
+    user_data.id = 0
     setUserData(user_data)
   }
   // 重新获取user_data
@@ -89,7 +89,7 @@ export const useEventList = defineStore('eventList', () => {
     const user_data = getUserData()
     const { type, name, time, isPositive } = obj
     const temp = {
-      id: user_data.id++,
+      id: ++user_data.id,
       name,
       time,
       positiveTime: 0,

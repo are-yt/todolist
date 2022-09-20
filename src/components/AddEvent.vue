@@ -25,7 +25,7 @@
         />
         <ElSlider
           v-else
-          :disabled="isPositive"
+          :disabled="event.isPositive"
           class="time-slider"
           v-model="event.time"
           size="small"
