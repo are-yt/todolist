@@ -75,7 +75,7 @@ export const useRecordTime = (
         const user_data = getUserData()
         user_data[type].findIndex((item: any, index: number) => {
           if (item.id === currentEventStore.currentEvent.id) {
-            user_data[type][index].positiveTime += 0.5
+            user_data[type][index].time -= 0.5
             return true
           }
         })

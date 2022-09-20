@@ -58,15 +58,12 @@ export const useEventList = defineStore('eventList', () => {
     if (type === 1) {
       const index = list.event_1.findIndex((item: any) => item.id === id)
       list.event_1[index].time -= 0.5
-      user_data.event_1 = list.event_1
     } else if (type === 2) {
       const index = list.event_2.findIndex((item: any) => item.id === id)
       list.event_2[index].time -= 0.5
-      user_data.event_2 = list.event_2
     } else {
       const index = list.event_3.findIndex((item: any) => item.id === id)
       list.event_3[index].time -= 0.5
-      user_data.event_3 = list.event_3
     }
     // 变更本地数据
     setUserData(user_data)
