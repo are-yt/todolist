@@ -40,7 +40,7 @@
 import { watch, ref } from 'vue'
 import { useCurrentEvent, useEventState, useEventList } from '@/store'
 import { useRecordTime } from '@/tools'
-import { ElNotification } from 'element-plus'
+import { ElNotification, ElMessageBox } from 'element-plus'
 import Worker from 'worker-loader!@/workers/worker.ts'
 let worker = new Worker()
 const currentEvent = useCurrentEvent()
@@ -100,11 +100,27 @@ const recordTime = () => {
   const isPositive = currentEvent.currentEvent.isPositive
   worker = new Worker()
   worker.postMessage(true)
+  let count = 0
   worker.onmessage = () => {
     if (seconds.value === 0 && minutes.value === 0 && !isPositive) {
       // 只中止倒计时，正向计时无上限状态
       isFinish.value = true
       worker.terminate()
+    } else if (++count === 25 * 60) {
+      // 番茄钟特性，每25分钟提醒一次休息
+      stop()
+      utools.showNotification('休息提醒,计时已暂停', 'home')
+      ElMessageBox.confirm('25分钟了,您可以休息几分钟再继续', '休息提醒', {
+        confirmButtonText: '好的',
+        cancelButtonText: '不必了'
+      })
+        .then(() => {
+          // 点击了确认，进入休息，暂停计时
+        })
+        .catch(() => {
+          // 点击了取消，继续工作，继续计时
+          start()
+        })
     }
     if (!isPositive) {
       if (seconds.value === 0) {
