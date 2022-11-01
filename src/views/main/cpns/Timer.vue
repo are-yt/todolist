@@ -1,7 +1,7 @@
 <template>
   <div class="timer-main">
     <div class="timer">
-      <div class="content" v-if="currentEvent.currentEvent.name">
+      <div v-if="currentEvent.currentEvent.name" class="content">
         <span>{{ currentEvent.currentEvent.name }}</span>
         <!-- 倒计时 -->
         <span v-if="!currentEvent.currentEvent.isPositive">
@@ -19,19 +19,19 @@
           {{ currentEvent.currentEvent.isPositive ? '正向计时' : '倒计时' }}
         </span>
       </div>
-      <div class="content" v-else>
+      <div v-else class="content">
         <span>等待指令...</span>
       </div>
     </div>
     <img
+      v-show="!eventState.isStart"
       src="~@/assets/images/timer/play.svg"
       @click="start"
-      v-show="!eventState.isStart"
     />
     <img
+      v-show="eventState.isStart"
       src="~@/assets/images/timer/stop.svg"
       @click="stop"
-      v-show="eventState.isStart"
     />
   </div>
 </template>

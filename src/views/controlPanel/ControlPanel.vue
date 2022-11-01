@@ -11,11 +11,11 @@
     <teleport to=".event-panel">
       <Transition name="slide-in">
         <AddEvent
-          edit
           v-if="editStateStore.isEdit"
+          edit
+          :edit-obj="editObj"
           @edit="edit"
           @cancel="cancelEdit"
-          :edit-obj="editObj"
         />
       </Transition>
     </teleport>
@@ -33,7 +33,7 @@
     <!-- add event btn ended -->
     <div class="content">
       <div class="category-list">
-        <ElCollapse accordion v-model="activeName">
+        <ElCollapse v-model="activeName" accordion>
           <ElCollapseItem name="1">
             <template #title>
               <img src="~@/assets/images/control-panel/warn_1.svg" />
@@ -63,8 +63,8 @@
                   >
                     <template #reference>
                       <img
-                        @click.stop
                         src="~@/assets/images/control-panel/delete.svg"
+                        @click.stop
                       />
                     </template>
                   </ElPopconfirm>
@@ -101,8 +101,8 @@
                   >
                     <template #reference>
                       <img
-                        @click.stop
                         src="~@/assets/images/control-panel/delete.svg"
+                        @click.stop
                       />
                     </template>
                   </ElPopconfirm>
@@ -139,8 +139,39 @@
                   >
                     <template #reference>
                       <img
-                        @click.stop
                         src="~@/assets/images/control-panel/delete.svg"
+                        @click.stop
+                      />
+                    </template>
+                  </ElPopconfirm>
+                </div>
+              </template>
+            </Draggable>
+          </ElCollapseItem>
+          <ElCollapseItem name="4">
+            <template #title>
+              <img src="~@/assets/images/control-panel/remind.svg" />
+              <span>提醒事件: {{ remindStore.remind.length }}</span>
+            </template>
+            <Draggable :list="remindStore.remind" animation="300" item-key="id">
+              <template #item="{ element }">
+                <div class="item">
+                  <div class="title" :title="element.name">
+                    <span>提醒任务:{{ element.name }}</span>
+                    <div>截止日期:{{ formatTime(element.time) }}</div>
+                    <div>提前提醒时间:{{ element.abortTime }}分钟</div>
+                  </div>
+                  <ElPopconfirm
+                    confirm-button-text="确认"
+                    cancel-button-text="取消"
+                    title="删除这个提醒?"
+                    @confirm="delRemind(element.id)"
+                    @cancel="nodel"
+                  >
+                    <template #reference>
+                      <img
+                        src="~@/assets/images/control-panel/delete.svg"
+                        @click.stop
                       />
                     </template>
                   </ElPopconfirm>
@@ -170,7 +201,8 @@ import {
   useCurrentEvent,
   useAddEventState,
   useEditState,
-  useEventState
+  useEventState,
+  useRemind
 } from '@/store'
 import { Ref, ref } from 'vue'
 import { EventItem } from '@/tools'
@@ -184,6 +216,7 @@ const currentEventStore = useCurrentEvent()
 const addEventStore = useAddEventState()
 const editStateStore = useEditState()
 const eventStateStore = useEventState()
+const remindStore = useRemind()
 // 开始添加
 const toadd = () => {
   addEventStore.updateIsAdd()
@@ -258,6 +291,21 @@ const del = (event: EventItem) => {
 const nodel = () => {
   console.log('no del')
 }
+// 时间格式处理
+const formatTime = (timeNumber: number) => {
+  const date = new Date(timeNumber)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minutes = date.getMinutes()
+  const seconds = date.getSeconds()
+  return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`
+}
+// 删除提醒
+const delRemind = (id: number) => {
+  remindStore.delRemind(id)
+}
 </script>
 
 <style lang="less" scoped>
@@ -286,6 +334,9 @@ const nodel = () => {
         justify-content: space-between;
         align-items: center;
         margin-right: 0;
+        .title {
+          font-size: 12px;
+        }
         span {
           width: 90%;
           text-overflow: ellipsis;

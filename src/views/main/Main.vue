@@ -1,11 +1,16 @@
 <template>
   <div id="main">
+    <teleport to=".remind">
+      <Transition name="remind">
+        <AddRemind v-if="isShow" @hide="isShow = false" />
+      </Transition>
+    </teleport>
     <Carousel v-if="list.length" :list="list" />
     <div class="timer">
       <Timer />
     </div>
     <div class="footer-bar">
-      <Footerbar />
+      <Footerbar @show-remind-panel="isShow = true" />
     </div>
   </div>
 </template>
@@ -22,8 +27,10 @@ import { useKeyboardEvent } from '@/tools'
 import Carousel from './cpns/Carousel.vue'
 import Timer from './cpns/Timer.vue'
 import Footerbar from './cpns/Footerbar.vue'
+import AddRemind from '@/components/AddRemind.vue'
 import { useAtStaView } from '@/store'
 const atStaView = useAtStaView()
+const isShow = ref(false)
 useKeyboardEvent()
 const list = ref([])
 requestBgList().then(res => {
@@ -35,6 +42,14 @@ onActivated(() => {
 </script>
 
 <style lang="less" scoped>
+.remind-enter-from,
+.remind-leave-to {
+  transform: translateY(-100%);
+}
+.remind-enter-active,
+.remind-leave-active {
+  transition: all 0.5s;
+}
 #main {
   width: inherit;
   height: inherit;

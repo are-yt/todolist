@@ -12,9 +12,12 @@ import {
   ElCarousel,
   ElCarouselItem,
   ElPopconfirm,
-  ElTooltip
+  ElTooltip,
+  ElDatePicker
 } from 'element-plus'
 import 'element-plus/dist/index.css'
+import ElementPlus from 'element-plus'
+import locale from 'element-plus/lib/locale/lang/zh-cn'
 const components = [
   ElButton,
   ElCollapse,
@@ -28,9 +31,11 @@ const components = [
   ElCarousel,
   ElCarouselItem,
   ElPopconfirm,
-  ElTooltip
+  ElTooltip,
+  ElDatePicker
 ]
 export const globalCpns = (app: App): void => {
+  app.use(ElementPlus, { locale })
   components.forEach(item => {
     app.component(item.name, item)
   })

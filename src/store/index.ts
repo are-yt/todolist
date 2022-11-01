@@ -6,6 +6,7 @@ import { useEditState } from './useEditState'
 import { useControlPanelState } from './useControlPnaelState'
 import { useEvents } from './useEvents'
 import { useAtStaView } from './useAtStaView'
+import { useRemind } from './useRemind'
 export {
   useEventList,
   useCurrentEvent,
@@ -14,5 +15,6 @@ export {
   useEditState,
   useControlPanelState,
   useEvents,
-  useAtStaView
+  useAtStaView,
+  useRemind
 }

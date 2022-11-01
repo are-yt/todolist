@@ -9,6 +9,6 @@
         }
     ],
     "development": {
-        "main": "http://localhost:8080/"
+        "main": "http://localhost:8080/home"
     }
 }

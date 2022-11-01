@@ -14,10 +14,18 @@
       src="~@/assets/images/timer/statistics.svg"
       @click="$router.push('/statistics')"
     />
+    <img
+      src="~@/assets/images/control-panel/remind-footer.svg"
+      @click="emits('showRemindPanel')"
+    />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const emits = defineEmits<{
+  (e: 'showRemindPanel'): void
+}>()
+</script>
 
 <style scoped lang="less">
 .footer {

@@ -6,3 +6,4 @@ declare module '*.vue' {
 }
 declare const utools: any
 declare module 'worker-loader!@/workers/worker.ts'
+declare module 'worker-loader!@/workers/remindTimer.ts'
